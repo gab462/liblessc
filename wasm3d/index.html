@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background: #ddd;
+                margin: 0;
+            }
+
+            canvas {
+                display: block;
+                image-rendering: pixelated;
+                width: 100vw;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="app" width="320" height="160"></canvas>
+        <script type="module">
+            (async () => {
+                const response = await fetch('index.wasm');
+                const bytes = await response.arrayBuffer();
+                const { instance } = await WebAssembly.instantiate(bytes);
+
+                const app = document.getElementById("app");
+                const ctx = app.getContext("2d");
+
+                const buffer = instance.exports.memory.buffer;
+                const pixels = instance.exports.render(0);
+                const image = new ImageData(new Uint8ClampedArray(buffer, pixels, app.width * app.height * 4), app.width);
+
+                let tick = timestamp => {
+                    instance.exports.render(timestamp);
+
+                    ctx.putImageData(image, 0, 0);
+
+                    window.requestAnimationFrame(tick);
+                };
+
+                window.requestAnimationFrame(tick);
+            })();
+        </script>
+    </body>
+</html>
