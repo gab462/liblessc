@@ -1,7 +1,6 @@
 CC := cc
-LD := ld
 CFLAGS := -std=c99 -Wall -Wextra -Wshadow -pedantic -ggdb
-OBJS := $(wildcard *.c)
+OBJS := cell.o map.o random.o tui.o main.o
 TARGET := a.out
 
 $(TARGET): $(OBJS)

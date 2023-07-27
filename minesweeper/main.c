@@ -6,6 +6,48 @@
 #include "cell.h"
 #include "map.h"
 
+void update_game(struct player *player, struct map *map, char c);
+
+void render_game(struct tui *tui, struct player *player, struct map *map);
+
+#define WIDTH 80
+#define HEIGHT 24
+
+int main(void)
+{
+	char display[WIDTH * HEIGHT];
+
+	struct tui tui = {
+		.display = display,
+		.width = WIDTH,
+		.height = HEIGHT
+	};
+
+	struct player player = {0};
+	struct map map;
+	char ch;
+
+	reset_map(&map);
+
+	setup_term();
+
+	clear_screen(&tui, ' ');
+
+	do {
+		render_game(&tui, &player, &map);
+
+		ch = getchar();
+
+		update_game(&player, &map, ch);
+	} while (ch != 'q');
+
+	clear_screen(&tui, ' ');
+	show_screen(&tui);
+	restore_term();
+
+	return 0;
+}
+
 int clamp(int from, int to, int x)
 {
 	return x < from ? from : x > to ? to : x;
@@ -61,42 +103,4 @@ void render_game(struct tui *tui, struct player *player, struct map *map)
 	set_char(tui, player->x * 2, player->y, 'x');
 
 	show_screen(tui);
-}
-
-#define WIDTH 80
-#define HEIGHT 24
-
-int main(void)
-{
-	char display[WIDTH * HEIGHT];
-
-	struct tui tui = {
-		.display = display,
-		.width = WIDTH,
-		.height = HEIGHT
-	};
-
-	struct player player = {0};
-	struct map map;
-	char ch;
-
-	reset_map(&map);
-
-	setup_term();
-
-	clear_screen(&tui, ' ');
-
-	do {
-		render_game(&tui, &player, &map);
-
-		ch = getchar();
-
-		update_game(&player, &map, ch);
-	} while (ch != 'q');
-
-	clear_screen(&tui, ' ');
-	show_screen(&tui);
-	restore_term();
-
-	return 0;
 }

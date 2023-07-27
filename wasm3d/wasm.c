@@ -62,21 +62,21 @@ uint32_t *render(float timestamp)
 	if (angle > PI)
 		angle -= PI * 2;
 
-	clear_screen(&canvas, COLOR_BLACK);
-
 	rotate_mesh_x(&cube, angle);
 	rotate_mesh_y(&cube, angle);
 	rotate_mesh_z(&cube, angle);
 	zoom_mesh(&cube, 50.0f);
 	offset_mesh(&cube, (float[3]){ -50.0f, 0.0f, 0.0f });
 
-	draw_mesh(&canvas, cube, COLOR_WHITE);
-
 	rotate_mesh_x(&pyramid, angle);
 	rotate_mesh_y(&pyramid, angle);
 	rotate_mesh_z(&pyramid, angle);
 	zoom_mesh(&pyramid, 50.0f);
 	offset_mesh(&pyramid, (float[3]){ 50.0f, 0.0f, 0.0f });
+
+	clear_screen(&canvas, COLOR_BLACK);
+
+	draw_mesh(&canvas, cube, COLOR_WHITE);
 
 	draw_mesh(&canvas, pyramid, COLOR_WHITE);
 
