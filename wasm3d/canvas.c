@@ -11,6 +11,9 @@ void clear_screen(struct canvas *canvas, uint32_t color)
 
 void set_pixel(struct canvas *canvas, int x, int y, uint32_t color)
 {
+	if (x < 0 || x >= canvas->width || y < 0 || y >= canvas->height)
+		return;
+
 	canvas->pixels[y * canvas->width + x] = color;
 }
 
@@ -39,11 +42,42 @@ void draw_line(struct canvas *canvas, int x1, int y1, int x2, int y2, uint32_t c
 	}
 }
 
-void draw_mesh(struct canvas *canvas, struct mesh mesh, uint32_t color)
+void offset_mesh(struct mesh *mesh, float offset[3])
 {
-	float center[3] = { canvas->width / 2, canvas->height / 2, 0.0f };
+	for (int i = 0; i < mesh->n_vertices; ++i)
+		for (int j = 0; j < 3; ++j)
+			mesh->vertices[i][j] += offset[j];
+}
 
-	offset_mesh(&mesh, center);
+void scale_mesh(struct mesh *mesh, float scale)
+{
+	for (int i = 0; i < mesh->n_vertices; ++i)
+		for (int j = 0; j < 3; ++j)
+			mesh->vertices[i][j] *= scale;
+}
+
+void project_mesh(struct mesh *mesh, float distance)
+{
+	for (int i = 0; i < mesh->n_vertices; ++i) {
+		float *v = mesh->vertices[i];
+
+		float proj = 1.0f / (distance - v[2]);
+
+		v[0] *= proj;
+		v[1] *= proj;
+	}
+}
+
+void draw_mesh(struct canvas *canvas, struct mesh mesh, float offset[3], float scale, float distance, uint32_t color)
+{
+	// Offset only z at first to keep center at (0,0)
+	offset_mesh(&mesh, (float[3]){ 0.0f, 0.0f, offset[2] });
+
+	project_mesh(&mesh, distance);
+	scale_mesh(&mesh, scale);
+
+	offset_mesh(&mesh, (float[3]){ offset[0], offset[1], 0.0f });
+	offset_mesh(&mesh, (float[3]){ canvas->width / 2, canvas->height / 2, 0.0f });
 
 	for (int i = 0; i < mesh.n_edges; ++i) {
 		int *edge = mesh.edges[i];

@@ -57,28 +57,31 @@ uint32_t *render(float timestamp)
 		}
 	};
 
+	float pyramid_offset[3] = { 20.0f, 0.0f, 0.0f };
+	float cube_offset[3] = { -20.0f, 0.0f, 0.0f };
+
 	angle += dt / 1000.f;
 
 	if (angle > PI)
 		angle -= PI * 2;
 
-	rotate_mesh_x(&cube, angle);
-	rotate_mesh_y(&cube, angle);
-	rotate_mesh_z(&cube, angle);
-	zoom_mesh(&cube, 50.0f);
-	offset_mesh(&cube, (float[3]){ -50.0f, 0.0f, 0.0f });
+	rotate_mesh(&cube, angle, AXIS_X);
+	rotate_mesh(&cube, angle, AXIS_Y);
+	rotate_mesh(&cube, angle, AXIS_Z);
 
-	rotate_mesh_x(&pyramid, angle);
-	rotate_mesh_y(&pyramid, angle);
-	rotate_mesh_z(&pyramid, angle);
-	zoom_mesh(&pyramid, 50.0f);
-	offset_mesh(&pyramid, (float[3]){ 50.0f, 0.0f, 0.0f });
+	rotate_mesh(&pyramid, angle, AXIS_X);
+	rotate_mesh(&pyramid, angle, AXIS_Y);
+	rotate_mesh(&pyramid, angle, AXIS_Z);
+
+	// Translate
+	rotate_point(cube_offset, angle, AXIS_Z);
+	rotate_point(pyramid_offset, angle, AXIS_Z);
 
 	clear_screen(&canvas, COLOR_BLACK);
 
-	draw_mesh(&canvas, cube, COLOR_WHITE);
+	draw_mesh(&canvas, cube, cube_offset, 50.0f, 2.0f, COLOR_WHITE);
 
-	draw_mesh(&canvas, pyramid, COLOR_WHITE);
+	draw_mesh(&canvas, pyramid, pyramid_offset, 50.0f, 2.0f, COLOR_WHITE);
 
 	previous = timestamp;
 

@@ -8,7 +8,3 @@ $(TARGET): $(OBJS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-
-.PHONY: clean
-clean:
-	rm $(OBJS) $(TARGET)
