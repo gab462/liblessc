@@ -1,3 +1,4 @@
 *.o
 *.wasm
 a.out
+minesweeper

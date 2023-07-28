@@ -1,3 +1,5 @@
+// 2d and 3d software rendering
+
 struct canvas {
 	uint32_t *pixels;
 	int width;

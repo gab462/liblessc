@@ -1,3 +1,5 @@
+// TUI rendering
+
 struct tui {
 	char *display;
 	int width;
