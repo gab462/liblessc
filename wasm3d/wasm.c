@@ -45,7 +45,7 @@ uint32_t *render(float timestamp)
 	struct mesh pyramid = {
 		.n_vertices = 4,
 		.n_edges = 6,
-		.vertices = (float[][3]){
+		.vertices = (float[][3]) {
 			{ -0.5f, 0.5f, -0.5f },
 			{  0.5f, 0.5f, -0.5f },
 			{  0.0f, 0.5f, sqrt(3.0f / 4.0f) - 0.5f },

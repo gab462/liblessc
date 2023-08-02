@@ -10,17 +10,14 @@ void update_game(struct player *player, struct map *map, char c);
 
 void render_game(struct tui *tui, struct player *player, struct map *map);
 
-#define WIDTH 80
-#define HEIGHT 24
-
 int main(void)
 {
-	char display[WIDTH * HEIGHT];
+	char display[MAP_WIDTH * 2 * MAP_HEIGHT];
 
 	struct tui tui = {
 		.display = display,
-		.width = WIDTH,
-		.height = HEIGHT
+		.width = MAP_WIDTH * 2,
+		.height = MAP_HEIGHT
 	};
 
 	struct player player = {0};

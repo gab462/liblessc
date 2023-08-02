@@ -1,4 +1,4 @@
 *.o
 *.wasm
-a.out
 minesweeper
+ed
