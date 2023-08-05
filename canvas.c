@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h> // FILE
 
 #include "mesh.h"
 #include "canvas.h"
@@ -88,4 +89,26 @@ void draw_mesh(struct canvas *canvas, struct mesh mesh, float offset[3], float s
 
 		draw_line(canvas, va[0], va[1], vb[0], vb[1], color);
 	}
+}
+
+void render_ppm(struct canvas *canvas, FILE *stream)
+{
+	fprintf(stream, "P6\n%d %d 255\n", canvas->width, canvas->height);
+
+	for (int i = 0; i < canvas->width * canvas->height; ++i) {
+		uint32_t pixel = canvas->pixels[i];
+
+		uint8_t data[3] = {
+			pixel & 0x0000FF,
+			(pixel & 0x00FF00) >> 8,
+			(pixel & 0xFF0000) >> 8 * 2
+		};
+
+		fwrite(data, sizeof(data), 1, stream);
+	}
+}
+
+void render_curses(struct canvas *canvas, FILE *stream)
+{
+	// TODO
 }
