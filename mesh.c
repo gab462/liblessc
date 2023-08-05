@@ -1,5 +1,6 @@
+#include <math.h>
+
 #include "mesh.h"
-#include "math.h"
 
 void rotate(float point[3], float matrix[3][3])
 {
@@ -19,21 +20,21 @@ void rotate_point(float point[3], float angle, enum axis axis)
 	case AXIS_X:
 		rotate(point, (float[3][3]){
 			{ 1.0f, 0.0f,        0.0f       },
-			{ 0.0f, cos(angle), -sin(angle) },
-			{ 0.0f, sin(angle),  cos(angle) }
+			{ 0.0f, cosf(angle), -sinf(angle) },
+			{ 0.0f, sinf(angle),  cosf(angle) }
 		});
 		break;
 	case AXIS_Y:
 		rotate(point, (float[3][3]){
-			{  cos(angle), 0.0f, sin(angle) },
+			{  cosf(angle), 0.0f, sinf(angle) },
 			{  0.0f,       1.0f, 0.0f       },
-			{ -sin(angle), 0.0f, cos(angle) }
+			{ -sinf(angle), 0.0f, cosf(angle) }
 		});
 		break;
 	case AXIS_Z:
 		rotate(point, (float[3][3]){
-			{ cos(angle), -sin(angle), 0.0f },
-			{ sin(angle),  cos(angle), 0.0f },
+			{ cosf(angle), -sinf(angle), 0.0f },
+			{ sinf(angle),  cosf(angle), 0.0f },
 			{ 0.0f,         0.0f,      1.0f }
 		});
 		break;

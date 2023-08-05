@@ -1,7 +1,8 @@
-#include "tui.h"
 #include <unistd.h>
 #include <termios.h>
 #include <stdio.h>
+
+#include "tui.h"
 
 void setup_term(void)
 {

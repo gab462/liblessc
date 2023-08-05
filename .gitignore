@@ -1,4 +1,3 @@
 *.o
-*.wasm
 minesweeper
-ed
+shapes

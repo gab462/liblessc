@@ -1,5 +1,6 @@
-#include "mesh.h"
 #include <stdint.h>
+
+#include "mesh.h"
 #include "canvas.h"
 
 void clear_screen(struct canvas *canvas, uint32_t color)

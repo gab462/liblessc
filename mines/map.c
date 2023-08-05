@@ -1,8 +1,8 @@
 #include <stdint.h>
+#include <stdlib.h> // rand
 
 #include "cell.h"
 #include "map.h"
-#include "random.h"
 
 void reset_map(struct map *map)
 {
@@ -11,7 +11,7 @@ void reset_map(struct map *map)
 	for (int i = 0; i < MAP_HEIGHT * MAP_WIDTH; ++i) {
 		struct cell *cell = &cells[i];
 
-		if (random() < 0.15f)
+		if (rand() % 100 < 15)
 			cell->has_bomb = 1;
 		else
 			cell->has_bomb = 0;

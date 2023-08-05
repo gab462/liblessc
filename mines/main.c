@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h> // srand
+#include <time.h> // random seed
 
 #include "tui.h"
 #include "player.h"
@@ -23,6 +25,8 @@ int main(void)
 	struct player player = {0};
 	struct map map;
 	char ch;
+
+	srand(time(NULL));
 
 	reset_map(&map);
 

@@ -1,7 +1,9 @@
 #include <stdint.h>
+#define __USE_MISC
+#include <math.h>
+
 #include "mesh.h"
 #include "canvas.h"
-#include "math.h"
 
 #define WIDTH 320
 #define HEIGHT 160
@@ -48,8 +50,8 @@ uint32_t *render(float timestamp)
 		.vertices = (float[][3]) {
 			{ -0.5f, 0.5f, -0.5f },
 			{  0.5f, 0.5f, -0.5f },
-			{  0.0f, 0.5f, sqrt(3.0f / 4.0f) - 0.5f },
-			{  0.0f, -sqrt(2.0f / 3.0f) + 0.5f, sqrt(1.0f / 12.0f) - 0.5f }
+			{  0.0f, 0.5f, sqrtf(3.0f / 4.0f) - 0.5f },
+			{  0.0f, -sqrtf(2.0f / 3.0f) + 0.5f, sqrtf(1.0f / 12.0f) - 0.5f }
 		},
 		.edges = (int[][2]) {
 			{ 0, 1 }, { 1, 2 }, { 2, 0 },
@@ -62,8 +64,8 @@ uint32_t *render(float timestamp)
 
 	angle += dt / 1000.f;
 
-	if (angle > PI)
-		angle -= PI * 2;
+	if (angle > M_PI)
+		angle -= M_PI * 2;
 
 	rotate_mesh(&cube, angle, AXIS_X);
 	rotate_mesh(&cube, angle, AXIS_Y);
@@ -88,13 +90,9 @@ uint32_t *render(float timestamp)
 	return canvas.pixels;
 }
 
-// FIXME: disable optimization
-void *memcpy(void *dst, void *src, int n)
+int main(void)
 {
-	char *d = dst;
-	char *s = src;
+	render(0);
 
-	while (n--) *d++ = *s++;
-
-	return dst;
+	return 0;
 }
