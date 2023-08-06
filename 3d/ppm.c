@@ -17,11 +17,7 @@ int main(void)
 
 	render(&canvas, 3.1415f / 4.0f);
 
-	FILE* file = fopen("1.ppm", "wb+");
-
-	render_ppm(&canvas, file);
-
-	fclose(file);
+	render_ppm(&canvas, stdout);
 
 	return 0;
 }
