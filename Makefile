@@ -2,13 +2,13 @@ CC := cc
 CFLAGS := -std=c99 -Wall -Wextra -Wshadow -pedantic -I. -ggdb
 MATH := -lm
 
-all: mines shapes
+all: mines 3d
 
 .PHONY: mines
 mines: minesweeper
 
 .PHONY: 3d
-3d: shapes
+3d: shapes_ppm shapes_ascii
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -16,5 +16,8 @@ mines: minesweeper
 minesweeper: mines/cell.o mines/map.o mines/main.o tui.o
 	$(CC) $(CFLAGS) $^ -o $@
 
-shapes: 3d/main.o mesh.o canvas.o
+shapes_ppm: 3d/ppm.o mesh.o canvas.o
+	$(CC) $(CFLAGS) $^ -o $@ $(MATH)
+
+shapes_ascii: 3d/ascii.o mesh.o canvas.o tui.o
 	$(CC) $(CFLAGS) $^ -o $@ $(MATH)

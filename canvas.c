@@ -1,10 +1,11 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h> // FILE
 
 #include "mesh.h"
 #include "canvas.h"
 
-void clear_screen(struct canvas *canvas, uint32_t color)
+void fill_canvas(struct canvas *canvas, uint32_t color)
 {
 	for (int i = 0; i < canvas->width * canvas->height; ++i) {
 		canvas->pixels[i] = color;
@@ -108,7 +109,24 @@ void render_ppm(struct canvas *canvas, FILE *stream)
 	}
 }
 
-void render_curses(struct canvas *canvas, FILE *stream)
+void render_ascii(struct canvas *canvas, FILE *stream, bool with_newlines)
 {
-	// TODO
+	// TODO: grayscale
+
+	char mapping[2][2] = {
+		{ ' ', '_' },
+		{ '^', '#' }
+	};
+
+	for (int y = 0; y < canvas->height / 2; ++y) {
+		for (int x = 0; x < canvas->width; ++x) {
+			int top = canvas->pixels[2 * y * canvas->width + x] > 0xFF000000;
+			int bottom = canvas->pixels[(2 * y + 1) * canvas->width + x] > 0xFF000000;
+
+			fputc(mapping[top][bottom], stream);
+		}
+
+		if (with_newlines)
+			fputc('\n', stream);
+	}
 }

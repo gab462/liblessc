@@ -6,7 +6,7 @@ struct canvas {
 	int height;
 };
 
-void clear_screen(struct canvas *canvas, uint32_t color);
+void fill_canvas(struct canvas *canvas, uint32_t color);
 
 void set_pixel(struct canvas *canvas, int x, int y, uint32_t color);
 
@@ -16,4 +16,4 @@ void draw_mesh(struct canvas *canvas, struct mesh mesh, float offset[3], float s
 
 void render_ppm(struct canvas *canvas, FILE *stream);
 
-void render_curses(struct canvas *canvas, FILE *stream);
+void render_ascii(struct canvas *canvas, FILE *stream, bool with_newlines);

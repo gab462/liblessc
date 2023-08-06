@@ -1,4 +1,5 @@
 *.o
 *.ppm
 minesweeper
-shapes
+shapes_ascii
+shapes_ppm

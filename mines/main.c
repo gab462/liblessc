@@ -32,7 +32,7 @@ int main(void)
 
 	setup_term();
 
-	clear_screen(&tui, ' ');
+	fill_tui(&tui, ' ');
 
 	do {
 		render_game(&tui, &player, &map);
@@ -42,9 +42,8 @@ int main(void)
 		update_game(&player, &map, ch);
 	} while (ch != 'q');
 
-	clear_screen(&tui, ' ');
-	show_screen(&tui);
-	restore_term();
+	fill_tui(&tui, ' ');
+	refresh_tui(&tui);
 
 	return 0;
 }
@@ -91,17 +90,17 @@ void update_game(struct player *player, struct map *map, char c)
 
 void render_game(struct tui *tui, struct player *player, struct map *map)
 {
-	clear_screen(tui, ' ');
+	fill_tui(tui, ' ');
 
-	for (int i = 0; i < MAP_HEIGHT; ++i) {
-		for (int j = 0; j < MAP_WIDTH; ++j) {
-			struct cell cell = map->cells[i][j];
+	for (int y = 0; y < MAP_HEIGHT; ++y) {
+		for (int x = 0; x < MAP_WIDTH; ++x) {
+			struct cell cell = map->cells[y][x];
 
-			set_char(tui, j * 2, i, cell_char(cell));
+			set_char(tui, x * 2, y, cell_char(cell));
 		}
 	}
 
 	set_char(tui, player->x * 2, player->y, 'x');
 
-	show_screen(tui);
+	refresh_tui(tui);
 }
