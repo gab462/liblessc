@@ -1,8 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
-#define __USE_MISC // M_PI
-#include <math.h>
 
 #include "mesh.h"
 #include "canvas.h"
@@ -17,7 +15,7 @@ int main(void)
 
 	struct canvas canvas = { pixels, WIDTH, HEIGHT };
 
-	render(&canvas, M_PI / 4.0f);
+	render(&canvas, 3.1415f / 4.0f);
 
 	FILE* file = fopen("1.ppm", "wb+");
 

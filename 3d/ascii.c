@@ -1,9 +1,8 @@
-#define _DEFAULT_SOURCE // M_PI, fmemopen
+#define _DEFAULT_SOURCE // fmemopen
 
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <math.h>
 #include <unistd.h> //usleep
 
 #include "mesh.h"
@@ -22,16 +21,13 @@ int main(void)
 
 	char display[WIDTH * HEIGHT / 2];
 
-	struct tui tui = {
-		.display = display,
-		.width = WIDTH,
-		.height = HEIGHT / 2
-	};
+	struct tui tui = { display, WIDTH, HEIGHT / 2 };
 
 	setup_term();
 
 	float angle = 0.0f;
 
+	// TODO: exit gracefully
 	while (true) {
 		fill_tui(&tui, ' ');
 
@@ -47,9 +43,6 @@ int main(void)
 
 		angle += 0.1f;
 	}
-
-	fill_tui(&tui, ' ');
-	refresh_tui(&tui);
 
 	return 0;
 }
