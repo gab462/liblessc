@@ -6,11 +6,28 @@
 
 #include "audio.h"
 
-int16_t sine_sample(float hertz, float t, float volume)
+int16_t wave_sample(float hertz, float t, float amplitude, enum wave type)
 {
-	float b = 2.0f * M_PI * hertz;
+	float y = 0.0f;
 
-	return sinf(b * t) * volume;
+	switch (type) {
+	case WAVE_SINE:
+	case WAVE_SQUARE: // based on sin function
+		y = sinf(2.0f * M_PI * hertz * t); 
+		if (type == WAVE_SQUARE)
+			y = y > 0.0f ? 1.0f : -1.0f;
+		break;
+	case WAVE_TRIANGLE:
+		y = 2.0f * fabsf(hertz * t - floorf(hertz * t + 0.5f));
+		break;
+	case WAVE_SAW:
+		y = 2.0f * (hertz * t - floorf(0.5f + hertz * t));
+		break;
+	default:
+		break;
+	}
+
+	return y * amplitude;
 }
 
 void write_wav(int16_t *data, int n, FILE *stream)
@@ -24,8 +41,8 @@ void write_wav(int16_t *data, int n, FILE *stream)
 	fwrite(&(uint16_t){ 1 }, 2, 1, stream); // audio format
 	fwrite(&(uint16_t){ 1 }, 2, 1, stream); // channels
 	fwrite(&(uint32_t){ SAMPLE_RATE }, 4, 1, stream); // sample rate
-	fwrite(&(uint32_t){ SAMPLE_RATE * 16 / 8 }, 4, 1, stream); // byte rate
-	fwrite(&(uint16_t){ 16 / 8 }, 2, 1, stream); // block align
+	fwrite(&(uint32_t){ SAMPLE_RATE * 2 }, 4, 1, stream); // byte rate
+	fwrite(&(uint16_t){ 2 }, 2, 1, stream); // block align
 	fwrite(&(uint16_t){ 16 }, 2, 1, stream); // bit size
 
 	fprintf(stream, "data");
