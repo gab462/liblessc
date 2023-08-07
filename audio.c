@@ -12,10 +12,10 @@ int16_t wave_sample(float hertz, float t, float amplitude, enum wave type)
 
 	switch (type) {
 	case WAVE_SINE:
-	case WAVE_SQUARE: // based on sin function
-		y = sinf(2.0f * M_PI * hertz * t); 
-		if (type == WAVE_SQUARE)
-			y = y > 0.0f ? 1.0f : -1.0f;
+		y = sinf(2.0f * M_PI * hertz * t);
+		break;
+	case WAVE_SQUARE:
+		y = sinf(2.0f * M_PI * hertz * t) > 0.0f ? 1.0f : -1.0f;
 		break;
 	case WAVE_TRIANGLE:
 		y = 2.0f * fabsf(hertz * t - floorf(hertz * t + 0.5f));
