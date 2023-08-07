@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdio.h> // FILE
+#include <stdio.h>
 
 #include "mesh.h"
 #include "canvas.h"
