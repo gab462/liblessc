@@ -16,7 +16,7 @@ int main(void)
 	for (int i = 0; i < N; ++i) {
 		float t = (float){ i } / (float){ SAMPLE_RATE }; // in seconds
 
-		float volume = sinf(2.0f * 3.1415f * 8.0f * t) + 1.0f / 2.0f;
+		float volume = (sinf(2.0f * 3.1415f * 8.0f * t) + 1.0f) / 2.0f;
 		float amp = (float){ INT16_MAX } / 8.0f * volume; // oscilating volume
 
 		if (i < N / 2) { // play sequentially
