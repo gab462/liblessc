@@ -15,7 +15,7 @@ int16_t wave_sample(float hertz, float t, float amplitude, enum wave type)
 		y = sinf(2.0f * M_PI * hertz * t);
 		break;
 	case WAVE_SQUARE:
-		y = sinf(2.0f * M_PI * hertz * t) > 0.0f ? 1.0f : -1.0f;
+		y = 1.0f - 2.0f * (sinf(2.0f * M_PI * hertz * t) > 0.0f);
 		break;
 	case WAVE_TRIANGLE:
 		y = 2.0f * fabsf(hertz * t - floorf(hertz * t + 0.5f));

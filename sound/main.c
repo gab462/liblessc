@@ -43,10 +43,6 @@ int main(void)
 				sound[i] += wave_sample(C4, t, amp, WAVE_SAW);
 			if (i > N / 2 + 3 * N / 8)
 				sound[i] += wave_sample(C4, t + 0.1f, amp, WAVE_TRIANGLE);
-
-			float n_waves = 1.0f + floorf((i - N / 2) / (N / 8));
-
-			sound[i] /= n_waves; // avoid volume increase
 		}
 	}
 

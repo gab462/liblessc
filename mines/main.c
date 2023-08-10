@@ -32,8 +32,6 @@ int main(void)
 
 	setup_term();
 
-	fill_tui(&tui, ' ');
-
 	do {
 		render_game(&tui, &player, &map);
 
