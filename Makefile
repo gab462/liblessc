@@ -1,5 +1,5 @@
 CC := cc
-CFLAGS := -std=c99 -Wall -I.
+CFLAGS := -std=c99 -Wall -I. -D_DEFAULT_SOURCE
 LDFLAGS := -lm
 
 all: snake mines 3d sound

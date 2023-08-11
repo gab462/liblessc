@@ -1,5 +1,3 @@
-#define _DEFAULT_SOURCE // M_PI
-
 #include <stdint.h>
 #include <stdio.h>
 #include <math.h>
