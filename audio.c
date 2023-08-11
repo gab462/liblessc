@@ -30,22 +30,32 @@ int16_t wave_sample(float hertz, float t, float amplitude, enum wave type)
 	return y * amplitude;
 }
 
+void write_u32(uint32_t data, FILE *stream)
+{
+	fwrite(&data, sizeof(data), 1, stream);
+}
+
+void write_u16(uint16_t data, FILE *stream)
+{
+	fwrite(&data, sizeof(data), 1, stream);
+}
+
 void write_wav(int16_t *data, int n, FILE *stream)
 {
 	fprintf(stream, "RIFF");
-	fwrite(&(uint32_t){ 36 + n * 2 }, 4, 1, stream); // total size
+	write_u32(36 + n * 2, stream); // total size
 	fprintf(stream, "WAVE");
 
 	fprintf(stream, "fmt ");
-	fwrite(&(uint32_t){ 16 }, 4, 1, stream); // subchunk size
-	fwrite(&(uint16_t){ 1 }, 2, 1, stream); // audio format
-	fwrite(&(uint16_t){ 1 }, 2, 1, stream); // channels
-	fwrite(&(uint32_t){ SAMPLE_RATE }, 4, 1, stream); // sample rate
-	fwrite(&(uint32_t){ SAMPLE_RATE * 2 }, 4, 1, stream); // byte rate
-	fwrite(&(uint16_t){ 2 }, 2, 1, stream); // block align
-	fwrite(&(uint16_t){ 16 }, 2, 1, stream); // bit size
+	write_u32(16, stream); // subchunk size
+	write_u16(1, stream); // audio format
+	write_u16(1, stream); // channels
+	write_u32(SAMPLE_RATE, stream); // sample rate
+	write_u32(SAMPLE_RATE * 2, stream); // byte rate
+	write_u16(2, stream); // block align
+	write_u16(16, stream); // bit size
 
 	fprintf(stream, "data");
-	fwrite(&(uint32_t){ n * 2 }, 4, 1, stream); // data size
+	write_u32(n * 2, stream); // data size
 	fwrite(data, n * 2, 1, stream);
 }
