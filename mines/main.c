@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include <stdint.h>
+#include <stddef.h>
+#include <stdio.h> // getchar
 #include <stdlib.h> // srand
 #include <time.h> // random seed
 
