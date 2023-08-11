@@ -30,3 +30,7 @@ shapes_ascii: 3d/ascii.c 3d/scene.c mesh.c canvas.c tui.c
 
 wave: sound/main.c audio.c
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+.PHONY: clean
+clean:
+	rm snake minesweeper shapes_ppm shapes_ascii

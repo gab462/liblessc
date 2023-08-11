@@ -44,7 +44,7 @@ void slither(struct snake *snake, int offset[2], struct map *map)
 	snake->body[snake->head][0] = next_x >= 0 ? next_x : map->width + next_x;
 	snake->body[snake->head][1] = next_y >= 0 ? next_y : map->height + next_y;
 
-	if (pos_equal(snake->body[snake->head], map->food_pos) && snake->size < MAX_SIZE - 2) {
+	if (pos_equal(snake->body[snake->head], map->food_pos) && snake->size < MAX_SIZE) {
 		++snake->size;
 		relocate_food(map);
 	} else {
