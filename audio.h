@@ -1,3 +1,5 @@
+// audio soundwave synthesis
+
 #define SAMPLE_RATE 44100
 
 enum wave {
