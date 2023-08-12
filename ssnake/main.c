@@ -32,17 +32,20 @@ void relocate_food(struct map *map)
 	map->food_pos[1] = rand() % map->height;
 }
 
+// take modulus and if negative, subtract from max
+int wrap(int x, int max)
+{
+	return x % max + (x % max < 0) * max;
+}
+
 void slither(struct snake *snake, int offset[2], struct map *map)
 {
 	int *prev = snake->body[snake->head];
 
 	snake->head = (snake->head + 1) % MAX_SIZE;
 
-	// FIXME: better algorithm?
-	int next_x = (prev[0] + offset[0]) % map->width;
-	int next_y = (prev[1] + offset[1]) % map->height;
-	snake->body[snake->head][0] = next_x >= 0 ? next_x : map->width + next_x;
-	snake->body[snake->head][1] = next_y >= 0 ? next_y : map->height + next_y;
+	snake->body[snake->head][0] = wrap(prev[0] + offset[0], map->width);
+	snake->body[snake->head][1] = wrap(prev[1] + offset[1], map->height);
 
 	if (pos_equal(snake->body[snake->head], map->food_pos) && snake->size < MAX_SIZE) {
 		++snake->size;
