@@ -21,6 +21,50 @@ struct map {
 	int food_pos[2];
 };
 
+void update_game(char ch, struct snake *snake, struct map *map);
+
+void render_game(struct tui *tui, struct snake *snake, struct map *map);
+
+#define WIDTH 80
+#define HEIGHT 24
+
+int main(void)
+{
+	char display[WIDTH * HEIGHT];
+
+	struct tui tui = {
+		.display = display,
+		.width = WIDTH,
+		.height = HEIGHT
+	};
+
+	struct snake snake = { .size = 1 };
+
+	struct map map = {
+		.width = WIDTH,
+		.height = HEIGHT,
+		.food_pos = { 1, 0 }
+	};
+
+	char ch = 'd';
+
+	srand(time(NULL));
+
+	setup_term();
+
+	do {
+		update_game(ch, &snake, &map);
+		render_game(&tui, &snake, &map);
+
+		ch = getchar();
+	} while (ch != 'q');
+
+	fill_tui(&tui, ' ');
+	refresh_tui(&tui);
+
+	return 0;
+}
+
 bool pos_equal(int a[2], int b[2])
 {
 	return a[0] == b[0] && a[1] == b[1];
@@ -101,44 +145,4 @@ void render_game(struct tui *tui, struct snake *snake, struct map *map)
 	}
 
 	refresh_tui(tui);
-}
-
-#define WIDTH 80
-#define HEIGHT 24
-
-int main(void)
-{
-	char display[WIDTH * HEIGHT];
-
-	struct tui tui = {
-		.display = display,
-		.width = WIDTH,
-		.height = HEIGHT
-	};
-
-	struct snake snake = { .size = 1 };
-
-	struct map map = {
-		.width = WIDTH,
-		.height = HEIGHT,
-		.food_pos = { 1, 0 }
-	};
-
-	char ch = 'd';
-
-	srand(time(NULL));
-
-	setup_term();
-
-	do {
-		update_game(ch, &snake, &map);
-		render_game(&tui, &snake, &map);
-
-		ch = getchar();
-	} while (ch != 'q');
-
-	fill_tui(&tui, ' ');
-	refresh_tui(&tui);
-
-	return 0;
 }

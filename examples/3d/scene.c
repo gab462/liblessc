@@ -5,6 +5,7 @@
 
 #include "mesh.h"
 #include "canvas.h"
+#include "scene.h"
 
 #define COLOR_WHITE 0xFFFFFFFF
 #define COLOR_BLACK 0xFF000000

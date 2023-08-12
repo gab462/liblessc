@@ -1,5 +1,5 @@
 *.o
-minesweeper
+mines
 shapes_ascii
 shapes_ppm
 wave

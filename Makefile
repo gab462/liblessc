@@ -1,36 +1,27 @@
 CC := cc
-CFLAGS := -std=c99 -Wall -I. -D_DEFAULT_SOURCE
+CFLAGS := -std=c99 -Wall -Isrc -D_DEFAULT_SOURCE
 LDFLAGS := -lm
 
-all: snake mines 3d sound
-
-.PHONY: ssnake
-ssnake: snake
-
-.PHONY: mines
-mines: minesweeper
+all: snake mines 3d wave
 
 .PHONY: 3d
 3d: shapes_ppm shapes_ascii
 
-.PHONY: sound
-sound: wave
-
-snake: ssnake/main.c tui.c
+snake: examples/snake.c src/tui.c
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-minesweeper: mines/cell.c mines/map.c mines/main.c tui.c
+mines: examples/mines.c src/tui.c
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-shapes_ppm: 3d/ppm.c 3d/scene.c mesh.c canvas.c
+shapes_ppm: examples/3d/ppm.c examples/3d/scene.c src/mesh.c src/canvas.c
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-shapes_ascii: 3d/ascii.c 3d/scene.c mesh.c canvas.c tui.c
+shapes_ascii: examples/3d/ascii.c examples/3d/scene.c src/mesh.c src/canvas.c src/tui.c
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-wave: sound/main.c audio.c
+wave: examples/wave.c src/audio.c
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 .PHONY: clean
 clean:
-	rm snake minesweeper shapes_ppm shapes_ascii
+	rm snake mines shapes_ppm shapes_ascii
