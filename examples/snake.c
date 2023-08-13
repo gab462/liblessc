@@ -120,10 +120,6 @@ void update_game(char ch, struct snake *snake, struct map *map)
 			offset[0] = 1;
 			offset[1] = 0;
 			break;
-		case ' ':
-			offset[0] = 0;
-			offset[1] = 0;
-			break;
 		default:
 			break;
 	};
