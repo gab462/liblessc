@@ -6,7 +6,8 @@ enum wave {
 	WAVE_SINE,
 	WAVE_SQUARE,
 	WAVE_TRIANGLE,
-	WAVE_SAW
+	WAVE_SAW,
+	WAVE_NOISE
 };
 
 int16_t wave_sample(float hertz, float t, float amplitude, enum wave type);

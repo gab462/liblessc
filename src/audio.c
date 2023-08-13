@@ -1,6 +1,7 @@
 #include <stdint.h>
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h> // FILE
+#include <stdlib.h> // rand
 
 #include "audio.h"
 
@@ -20,6 +21,9 @@ int16_t wave_sample(float hertz, float t, float amplitude, enum wave type)
 		break;
 	case WAVE_SAW:
 		y = 2.0f * (hertz * t - floorf(0.5f + hertz * t));
+		break;
+	case WAVE_NOISE:
+		y = 2.0f * (float){ rand() } / (float){ RAND_MAX } - 1.0f;
 		break;
 	default:
 		break;
