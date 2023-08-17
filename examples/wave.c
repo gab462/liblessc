@@ -4,7 +4,7 @@
 
 #include "audio.h"
 
-#define DURATION 5
+#define DURATION 10
 #define N (SAMPLE_RATE * DURATION)
 
 #define C4 261.63f
@@ -13,12 +13,12 @@ int main(void)
 {
 	int16_t sound[N];
 
-	float wave_time = (float){ N } / (float){ DURATION } / 2.0f; // duration for each wave
+	float wave_time = (float){ N } / 10.0f; // duration for each wave
 
 	for (int i = 0; i < N; ++i) {
 		float t = (float){ i } / (float){ SAMPLE_RATE }; // in seconds
 
-		float volume = (sinf(2.0f * 3.1415f * 8.0f * t) + 1.0f) / 2.0f;
+		float volume = (sinf(2.0f * M_PI * t - M_PI / 2.0f) + 1.0f) / 2.0f;
 		float amp = (float){ INT16_MAX } / 8.0f * volume; // oscilating volume
 
 		if (i < N / 2) { // play sequentially
@@ -46,9 +46,9 @@ int main(void)
 			if (i > N / 2 + 2 * wave_time)
 				sound[i] += wave_sample(C4, t, amp, WAVE_SAW);
 			if (i > N / 2 + 3 * wave_time)
-				sound[i] += wave_sample(C4, t + 0.1f, amp, WAVE_TRIANGLE);
+				sound[i] += wave_sample(C4, t, amp, WAVE_TRIANGLE);
 			if (i > N / 2 + 4 * wave_time)
-				sound[i] += wave_sample(C4, t + 0.1f, amp, WAVE_NOISE);
+				sound[i] += wave_sample(C4, t, amp, WAVE_NOISE);
 		}
 	}
 
