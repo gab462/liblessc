@@ -9,37 +9,43 @@
 #define WIDTH 80
 #define HEIGHT 24
 
-void init_array(int arr[WIDTH]);
+static int arr[WIDTH];
 
-void bubble(struct tui *tui, int arr[WIDTH]);
-void selection(struct tui *tui, int arr[WIDTH]);
-void insertion(struct tui *tui, int arr[WIDTH]);
-void merge(struct tui *tui, int arr[WIDTH]);
-void quick(struct tui *tui, int arr[WIDTH]);
+struct tui tui;
+
+void init_array(void);
+
+void bubble(void);
+void selection(void);
+void insertion(void);
+void merge(void);
+void quick(void);
 
 int main(void)
 {
 	char display[WIDTH * HEIGHT];
 
-	struct tui tui = {
+	tui = (struct tui){
 		.display = display,
 		.width = WIDTH,
 		.height = HEIGHT
 	};
 
-	int arr[WIDTH];
-
 	srand(time(NULL));
 
 	setup_term();
 
-	init_array(arr);
+	void (*algorithms[])(void) = { insertion, selection, bubble };
 
-	//bubble(&tui, arr);
-	//selection(&tui, arr);
-	insertion(&tui, arr);
+	for (int i = 0; i < sizeof(algorithms) / sizeof(algorithms[0]); ++i) {
+		init_array();
 
-	getchar();
+		getchar();
+
+		algorithms[i]();
+
+		getchar();
+	}
 
 	fill_tui(&tui, ' ');
 	refresh_tui(&tui);
@@ -47,29 +53,31 @@ int main(void)
 	return 0;
 }
 
-void init_array(int arr[WIDTH])
+void render(int ptr)
 {
-	for (int i = 0; i < WIDTH; ++i) {
-		arr[i] = rand() % HEIGHT;
-	}
-}
+	fill_tui(&tui, ' ');
 
-void render(struct tui *tui, int arr[WIDTH], int ptr)
-{
-	fill_tui(tui, ' ');
-
-	for (int y = 0; y < tui->height; ++y) {
-		for (int x = 0; x < tui->width; ++x) {
+	for (int y = 0; y < tui.height; ++y) {
+		for (int x = 0; x < tui.width; ++x) {
 			char c = x == ptr ? '*' : '#';
 
-			if (arr[x] >= tui->height - y)
-				set_char(tui, x, y, c);
+			if (arr[x] >= tui.height - y)
+				set_char(&tui, x, y, c);
 		}
 	}
 
-	refresh_tui(tui);
+	refresh_tui(&tui);
 
 	usleep(50000);
+}
+
+void init_array(void)
+{
+	for (int i = 0; i < WIDTH; ++i) {
+		arr[i] = rand() % HEIGHT;
+
+		render(i);
+	}
 }
 
 void swap(int *a, int *b)
@@ -79,7 +87,7 @@ void swap(int *a, int *b)
 	*b = tmp;
 }
 
-void bubble(struct tui *tui, int arr[WIDTH])
+void bubble(void)
 {
 	bool swapped;
 
@@ -87,20 +95,18 @@ void bubble(struct tui *tui, int arr[WIDTH])
 		swapped = false;
 
 		for (int i = 1; i < WIDTH; ++i) {
-			render(tui, arr, i);
-
 			if (arr[i - 1] > arr[i]) {
 				swap(&arr[i - 1], &arr[i]);
 
 				swapped = true;
-
-				render(tui, arr, i);
 			}
+
+			render(i);
 		}
 	} while (swapped);
 }
 
-void selection(struct tui *tui, int arr[WIDTH])
+void selection(void)
 {
 	for (int i = 0; i < WIDTH - 1; ++i) {
 		int min = i;
@@ -109,7 +115,7 @@ void selection(struct tui *tui, int arr[WIDTH])
 			if (arr[j] < arr[min])
 				min = j;
 
-			render(tui, arr, j);
+			render(j);
 		}
 
 		if (min != i)
@@ -117,21 +123,23 @@ void selection(struct tui *tui, int arr[WIDTH])
 	}
 }
 
-void insertion(struct tui *tui, int arr[WIDTH])
+void insertion(void)
 {
 	for (int i = 1; i < WIDTH; ++i) {
 		for (int j = i; j > 0 && arr[j - 1] > arr[j]; --j) {
 			swap(&arr[j], &arr[j - 1]);
 
-			render(tui, arr, j - 1);
+			render(j - 1);
 		}
 	}
 }
 
-void merge(struct tui *tui, int arr[WIDTH])
+void merge(void)
 {
+	// TODO
 }
 
-void quick(struct tui *tui, int arr[WIDTH])
+void quick(void)
 {
+	// TODO
 }
