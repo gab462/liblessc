@@ -1,6 +1,6 @@
 CC := cc
 CFLAGS := -std=c99 -Wall -Isrc -D_DEFAULT_SOURCE
-LDFLAGS := -lm -static
+LDFLAGS := -lm
 
 all: snake mines 3d wave sort
 

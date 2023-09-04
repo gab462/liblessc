@@ -14,10 +14,11 @@ static int arr[WIDTH];
 struct tui tui;
 
 void init_array(void);
+void travel(void);
 
 void bubble(void);
-void selection(void);
 void insertion(void);
+void selection(void);
 void merge(void);
 void quick(void);
 
@@ -40,11 +41,13 @@ int main(void)
 	for (int i = 0; i < sizeof(algorithms) / sizeof(algorithms[0]); ++i) {
 		init_array();
 
-		getchar();
+		usleep(2000000);
 
 		algorithms[i]();
 
-		getchar();
+		travel();
+
+		usleep(2000000);
 	}
 
 	fill_tui(&tui, ' ');
@@ -80,6 +83,13 @@ void init_array(void)
 	}
 }
 
+void travel(void)
+{
+	for (int i = 0; i < WIDTH; ++i) {
+		render(i);
+	}
+}
+
 void swap(int *a, int *b)
 {
 	int tmp = *a;
@@ -106,6 +116,17 @@ void bubble(void)
 	} while (swapped);
 }
 
+void insertion(void)
+{
+	for (int i = 1; i < WIDTH; ++i) {
+		for (int j = i; j > 0 && arr[j - 1] > arr[j]; --j) {
+			swap(&arr[j], &arr[j - 1]);
+
+			render(j - 1);
+		}
+	}
+}
+
 void selection(void)
 {
 	for (int i = 0; i < WIDTH - 1; ++i) {
@@ -120,17 +141,6 @@ void selection(void)
 
 		if (min != i)
 			swap(&arr[i], &arr[min]);
-	}
-}
-
-void insertion(void)
-{
-	for (int i = 1; i < WIDTH; ++i) {
-		for (int j = i; j > 0 && arr[j - 1] > arr[j]; --j) {
-			swap(&arr[j], &arr[j - 1]);
-
-			render(j - 1);
-		}
 	}
 }
 
