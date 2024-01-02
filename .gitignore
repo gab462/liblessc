@@ -1,7 +1,8 @@
 *.o
 mines
-shapes_ascii
-shapes_ppm
+shapes
 wave
 snake
 sort
+basics
+build

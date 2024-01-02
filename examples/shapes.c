@@ -1,11 +1,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <unistd.h> //usleep
 #include <math.h>
 
 #include "mesh.h"
 #include "canvas.h"
-#include "scene.h"
+#include "tui.h"
+
+#define WIDTH 80
+#define HEIGHT 40
 
 #define COLOR_WHITE 0xFFFFFFFF
 #define COLOR_BLACK 0xFF000000
@@ -71,4 +75,38 @@ void render(struct canvas *canvas, float angle)
 	draw_mesh(canvas, cube, cube_offset, h * 0.7f, 2.0f, COLOR_WHITE);
 
 	draw_mesh(canvas, pyramid, pyramid_offset, h * 0.7f, 2.0f, COLOR_WHITE);
+}
+
+int main(void)
+{
+	uint32_t pixels[WIDTH * HEIGHT];
+
+	struct canvas canvas = { pixels, WIDTH, HEIGHT };
+
+	char display[WIDTH * HEIGHT / 2];
+
+	struct tui tui = { display, WIDTH, HEIGHT / 2 };
+
+	setup_term();
+
+	float angle = 0.0f;
+
+	// TODO: exit gracefully
+	while (true) {
+		fill_tui(&tui, ' ');
+
+		render(&canvas, angle);
+
+		FILE *screen = fmemopen(tui.display, tui.width * tui.height, "w");
+		render_ascii(&canvas, screen, false);
+		fclose(screen);
+
+		refresh_tui(&tui);
+
+		usleep(100000);
+
+		angle += 0.1f;
+	}
+
+	return 0;
 }
